@@ -1,4 +1,4 @@
-# rpv
+# ruby-pv
 
 A handy progress monitor for long-running programs. Like [`pv`](http://linux.die.net/man/1/pv), but for Ruby. 
 
