@@ -1,6 +1,10 @@
 require 'pv'
 
 RSpec.describe 'pv progress display' do
+  before do
+    mock_term_width(80)
+  end
+
   it 'shows progress bar when running a loop of known size' do
     expect {
       4.times.pv {}

@@ -1,3 +1,5 @@
+require 'io/console'
+
 class Pv
   include Enumerable
 
@@ -7,6 +9,7 @@ class Pv
 
   def each
     return to_enum unless block_given?
+    # TODO don't display progress unless $stdout.tty?
 
     self.progress = 0
 
@@ -62,8 +65,7 @@ class Pv
   end
 
   def term_width
-    # TODO use real term size.
-    80
+    IO.console.winsize[1]
   end
 
   FRAC_CHARS = " ▏▎▍▌▋▊▉"

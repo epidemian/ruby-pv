@@ -1,6 +1,8 @@
 require 'pv'
 
 RSpec.describe 'pv' do
+  silence_examples_output
+
   it 'is defined for all Enumerables' do
     expect(Enumerable.public_method_defined?(:pv)).to be true
   end
