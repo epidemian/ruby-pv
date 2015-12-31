@@ -51,4 +51,11 @@ RSpec.describe 'pv' do
     evens = (1..7).select.pv(&:even?)
     expect(evens).to eq [2, 4, 6]
   end
+
+  it 'does not swallow exceptions' do
+    exception = Exception.new('boom')
+    expect {
+      10.times.pv { raise exception }
+    }.to raise_error(exception)
+  end
 end

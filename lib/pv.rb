@@ -22,7 +22,6 @@ class Pv
     end
   ensure
     # Run on ensure block to raised StopIterations don't mess up the display.
-    # TODO add spec example for this.
     clear_progress
     restore_stdout
   end
@@ -53,10 +52,13 @@ class Pv
     bar = draw_progress_bar(bar_size)
     line = "#{l_bar}#{bar}#{r_bar}\r"
     @original_stdout.print line
+    @progress_displayed = true
   end
 
   def clear_progress
+    return unless @progress_displayed
     @original_stdout.print(" " * term_width + "\r")
+    @progress_displayed = false
   end
 
   def term_width
@@ -93,7 +95,6 @@ class Pv
   end
 
   # Hijacks $stdout so user can still print stuff while showing the progressbar.
-  # TODO test this.
   def hijack_stdout
     @original_stdout = $stdout
     $stdout = PvAwareStdout.new do |data|
