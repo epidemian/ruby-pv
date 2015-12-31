@@ -1,0 +1,28 @@
+# This is the configuration used to check the rubocop source code.
+
+Metrics/AbcSize:
+  Enabled: false
+
+# TODO: shorten long methods.
+Metrics/MethodLength:
+  Max: 13
+
+Style/BlockDelimiters:
+  EnforcedStyle: semantic
+
+Style/Documentation:
+  Exclude:
+    - 'spec/**/*'
+    - 'lib/pv.rb' # TODO: add docs.
+
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
+
+Style/SignalException:
+  Enabled: false
+
+Style/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Style/TrailingComma:
+  EnforcedStyleForMultiline: consistent_comma

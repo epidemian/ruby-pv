@@ -25,7 +25,7 @@ end
 
 task :unsized_slow_example do
   require 'pv'
-  50.times.to_enum.pv do |n|
+  50.times.to_enum.pv do
     sleep 0.5
   end
 end

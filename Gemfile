@@ -1,4 +1,7 @@
 # A sample Gemfile
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem 'rspec', group: :development
+group :development do
+  gem 'rspec'
+  gem 'rubocop'
+end

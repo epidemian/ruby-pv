@@ -9,7 +9,7 @@ class Pv
 
   def each
     return to_enum unless block_given?
-    # TODO don't display progress unless $stdout.tty?
+    # TODO: don't display progress unless $stdout.tty?
 
     self.progress = 0
 
@@ -42,15 +42,8 @@ class Pv
   end
 
   def display_progress
-    if unknown_total?
-      total_text = 'unknown'
-      progress_text = progress.to_s
-    else
-      total_text = total.to_s
-      progress_text = progress.to_s.rjust(total_text.size)
-    end
-    l_bar = "Progress: #{progress_text}/#{total_text} ▕"
-    r_bar = "▏"
+    l_bar = "Progress: #{formatted_numeric_progress} ▕"
+    r_bar = '▏'
     bar_size = term_width - l_bar.size - r_bar.size
     bar = draw_progress_bar(bar_size)
     line = "#{l_bar}#{bar}#{r_bar}\r"
@@ -60,7 +53,7 @@ class Pv
 
   def clear_progress
     return unless @progress_displayed
-    @original_stdout.print(" " * term_width + "\r")
+    @original_stdout.print(' ' * term_width + "\r")
     @progress_displayed = false
   end
 
@@ -68,27 +61,45 @@ class Pv
     IO.console.winsize[1]
   end
 
-  FRAC_CHARS = " ▏▎▍▌▋▊▉"
+  def formatted_numeric_progress
+    if unknown_total?
+      total_text = 'unknown'
+      progress_text = progress.to_s
+    else
+      total_text = total.to_s
+      progress_text = progress.to_s.rjust(total_text.size)
+    end
+    "#{progress_text}/#{total_text}"
+  end
 
   def draw_progress_bar(bar_size)
-    return draw_unknown_progress_bar(bar_size) if unknown_total?
-    copleted_size, remainder = (progress.to_f / total * bar_size).divmod(1)
+    if unknown_total?
+      draw_unknown_progress_bar(bar_size)
+    else
+      draw_known_progress_bar(bar_size)
+    end
+  end
+
+  FRAC_CHARS = ' ▏▎▍▌▋▊▉'
+
+  def draw_known_progress_bar(bar_size)
+    completed_size, remainder = (progress.to_f / total * bar_size).divmod(1)
 
     rem_char =
       progress == total ? '' : FRAC_CHARS[(FRAC_CHARS.size * remainder).floor]
 
-    completed = '█' * copleted_size
-    uncompleted = ' ' * (bar_size - copleted_size - rem_char.size)
+    completed = '█' * completed_size
+    uncompleted = ' ' * (bar_size - completed_size - rem_char.size)
 
     "#{completed}#{rem_char}#{uncompleted}"
   end
 
   UNKNOWN_PROGRESS_FRAMES = [
-    "▐  ▌ ",
-    "▖▘▗▝ ",
-    " ▝▖ ▚",
-    " ▗▘ ▞",
-    "▘▖▝▗ ",
+    '▐  ▌ ',
+    '▖▘▗▝ ',
+    ' ▝▖ ▚',
+    ' ▗▘ ▞',
+    '▘▖▝▗ ',
   ].map(&:chars)
 
   def draw_unknown_progress_bar(bar_size)
@@ -110,7 +121,7 @@ class Pv
     $stdout = @original_stdout
   end
 
-  # TODO make this respond to everything STDOUT responds to.
+  # TODO: make this respond to everything STDOUT responds to.
   class PvAwareStdout
     def initialize(&writer)
       @writer = writer
@@ -122,8 +133,8 @@ class Pv
   end
 end
 
-module Enumerable
-  # TODO Add non-monkey-patching alternative (refinements maybe?)
+Enumerable.module_eval do
+  # TODO: Add non-monkey-patching alternative (refinements maybe?)
   def pv(&blk)
     pv = Pv.new(self)
     if blk

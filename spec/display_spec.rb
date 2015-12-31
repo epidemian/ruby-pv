@@ -1,5 +1,7 @@
 require 'pv'
 
+# rubocop:disable Metrics/LineLength
+
 RSpec.describe 'pv progress display' do
   before do
     mock_term_width(80)
@@ -39,15 +41,15 @@ RSpec.describe 'pv progress display' do
       "Progress: 3/unknown ▕ ▗▘ ▞ ▗▘ ▞ ▗▘ ▞ ▗▘ ▞ ▗▘ ▞ ▗▘ ▞ ▗▘ ▞ ▗▘ ▞ ▗▘ ▞ ▗▘ ▞ ▗▘ ▞ ▗▘▏\r",
       "Progress: 4/unknown ▕▘▖▝▗ ▘▖▝▗ ▘▖▝▗ ▘▖▝▗ ▘▖▝▗ ▘▖▝▗ ▘▖▝▗ ▘▖▝▗ ▘▖▝▗ ▘▖▝▗ ▘▖▝▗ ▘▖▝▏\r",
       "Progress: 5/unknown ▕▐  ▌ ▐  ▌ ▐  ▌ ▐  ▌ ▐  ▌ ▐  ▌ ▐  ▌ ▐  ▌ ▐  ▌ ▐  ▌ ▐  ▌ ▐  ▏\r",
-      "                                                                                \r"
+      "                                                                                \r",
     ).to_stdout
   end
 
   it 'lets code inside loop print to stdout without clobbering its output' do
     expect {
       (1..4).pv.each do |n|
-        puts "Hello from second iteration!" if n == 2
-        (puts "4th..."; print "A "; print "weird "; print "line!\n") if n == 4
+        puts 'Hello from second iteration!' if n == 2
+        (puts '4th...'; print 'A '; print 'weird '; print "line!\n") if n == 4
       end
     }.to output_many(
       "Progress: 0/4 ▕                                                                ▏\r",
@@ -67,7 +69,7 @@ RSpec.describe 'pv progress display' do
       "A weird line!\n",
       "Progress: 3/4 ▕████████████████████████████████████████████████                ▏\r",
       "Progress: 4/4 ▕████████████████████████████████████████████████████████████████▏\r",
-      "                                                                                \r"
+      "                                                                                \r",
     ).to_stdout
   end
 

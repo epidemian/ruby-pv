@@ -9,13 +9,10 @@ RSpec.configure do |config|
   config.disable_monkey_patching!
   config.warnings = true
 
-  if config.files_to_run.one?
-    config.default_formatter = 'doc'
-  end
+  config.default_formatter = 'doc' if config.files_to_run.one?
 
   config.order = :random
   Kernel.srand config.seed
-
 end
 
 module ConsoleGroupHelpers
@@ -31,7 +28,7 @@ end
 
 module ConsoleExampleHelpers
   def mock_term_width(width)
-    allow(IO.console).to receive(:winsize){ [42, width] }
+    allow(IO.console).to receive(:winsize) { [42, width] }
   end
 end
 

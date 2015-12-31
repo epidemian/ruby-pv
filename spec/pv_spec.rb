@@ -18,7 +18,7 @@ RSpec.describe 'pv' do
 
   it 'works for iterator methods that receive multiple-argument blocks' do
     pairs = {a: 1, b: 2}.pv.map { |k, v| "#{k}:#{v}" }
-    expect(pairs).to eq %w[a:1 b:2]
+    expect(pairs).to eq %w(a:1 b:2)
   end
 
   it 'works on Enumerators of unknown size' do
@@ -38,7 +38,7 @@ RSpec.describe 'pv' do
 
     chant = ballmer.pv.take(4)
 
-    expect(chant).to eq %w[developers developers developers developers]
+    expect(chant).to eq %w(developers developers developers developers)
   end
 
   it 'can receive a block' do
