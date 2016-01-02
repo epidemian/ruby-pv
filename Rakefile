@@ -1,5 +1,12 @@
 $LOAD_PATH << File.join(__dir__, 'lib')
 
+require 'bundler/gem_tasks'
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec)
+
+task default: :spec
+
 task :example do
   require 'pv'
   500.times.pv do |n|
