@@ -14,25 +14,3 @@ RSpec.configure do |config|
   config.order = :random
   Kernel.srand config.seed
 end
-
-module ConsoleGroupHelpers
-  def silence_examples_output
-    before do
-      $stdout = File.open(File::NULL, 'w')
-    end
-    after do
-      $stdout = STDOUT
-    end
-  end
-end
-
-module ConsoleExampleHelpers
-  def mock_term_width(width)
-    allow(IO.console).to receive(:winsize) { [42, width] }
-  end
-end
-
-RSpec.configure do |config|
-  config.extend ConsoleGroupHelpers
-  config.include ConsoleExampleHelpers
-end

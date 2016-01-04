@@ -1,7 +1,14 @@
 require 'pv'
 
 RSpec.describe 'pv' do
-  silence_examples_output
+  before do
+    # Silence stdout to avoid progress bar from clobbering RSpec output.
+    $stdout = File.open(File::NULL, 'w')
+  end
+
+  after do
+    $stdout = STDOUT
+  end
 
   it 'is defined for all Enumerables' do
     expect(Enumerable.public_method_defined?(:pv)).to be true

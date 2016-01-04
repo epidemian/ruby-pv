@@ -58,7 +58,11 @@ class Pv
   end
 
   def term_width
-    IO.console.winsize[1]
+    if @original_stdout.tty?
+      @original_stdout.winsize[1]
+    else
+      80
+    end
   end
 
   def formatted_numeric_progress
