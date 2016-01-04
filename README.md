@@ -1,5 +1,7 @@
 # ruby-pv
 
+[![Build Status](https://img.shields.io/travis/epidemian/ruby-pv/master.svg)](https://travis-ci.org/epidemian/ruby-pv) [![Gem](https://img.shields.io/gem/v/ruby-pv.svg)](https://rubygems.org/gems/ruby-pv)
+
 :construction: **WORK IN PROGRESS** :construction:
 
 A handy progress monitor for long-running tasks. Like [`pv`](http://linux.die.net/man/1/pv), but for Ruby. 
