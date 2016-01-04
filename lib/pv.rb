@@ -128,9 +128,10 @@ class Pv
   end
 
   # Extend StringIO so all output IO methods are supported and defined in terms
-  # of write().
+  # of write(). It does *not* respect the Liskov substitution principle.
   class PvAwareStdout < StringIO
     def initialize(pv)
+      super()
       @pv = pv
     end
 
