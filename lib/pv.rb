@@ -3,6 +3,8 @@ require 'io/console'
 class Pv
   include Enumerable
 
+  attr_accessor :progress
+
   def initialize(enum)
     @enum = enum
   end
@@ -30,8 +32,6 @@ class Pv
   end
 
   private
-
-  attr_accessor :progress
 
   def total
     @enum.size
