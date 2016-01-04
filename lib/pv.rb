@@ -1,4 +1,5 @@
 require 'io/console'
+require 'stringio'
 
 class Pv
   include Enumerable
@@ -26,9 +27,14 @@ class Pv
       val
     end
   ensure
-    # Run on ensure block to raised StopIterations don't mess up the display.
     clear_progress
     restore_stdout
+  end
+
+  def write_to_stdout(data)
+    clear_progress
+    @original_stdout.write(data)
+    display_progress if data.end_with?("\n")
   end
 
   private
@@ -114,25 +120,22 @@ class Pv
   # Hijacks $stdout so user can still print stuff while showing the progressbar.
   def hijack_stdout
     @original_stdout = $stdout
-    $stdout = PvAwareStdout.new do |data|
-      clear_progress
-      @original_stdout.write(data)
-      display_progress if data.end_with?("\n")
-    end
+    $stdout = PvAwareStdout.new(self)
   end
 
   def restore_stdout
     $stdout = @original_stdout
   end
 
-  # TODO: make this respond to everything STDOUT responds to.
-  class PvAwareStdout
-    def initialize(&writer)
-      @writer = writer
+  # Extend StringIO so all output IO methods are supported and defined in terms
+  # of write().
+  class PvAwareStdout < StringIO
+    def initialize(pv)
+      @pv = pv
     end
 
     def write(data)
-      @writer.call(data)
+      @pv.write_to_stdout(data)
     end
   end
 end
